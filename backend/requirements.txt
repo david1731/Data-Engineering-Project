@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-decouple
+pyyaml
+pandas
+asyncpg
+matplotlib
+decouple
+python-decouple
+python-dotenv
+openpyxl 

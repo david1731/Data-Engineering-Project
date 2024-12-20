@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: venmito_fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./reports/visuals:/reports/visuals
+    environment:
+      DATABASE_URL: postgresql://venmito_user:secure_password@db:5432/venmito_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    container_name: venmito_postgres
+    environment:
+      POSTGRES_USER: venmito_user
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: venmito_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql/scripts:/docker-entrypoint-initdb.d/  # Mount scripts for initialization
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U venmito_user -d venmito_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
